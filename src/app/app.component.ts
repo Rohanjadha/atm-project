@@ -20,8 +20,9 @@ export class AppComponent {
   note100Count: number = 0;
   totalAmount: number = 0;
   transactions: Transaction[] = [];
-  withDrawalAmount:number=0;
 
+  withDrawalAmount:number=0;
+  
   calculateTotal() {
     this.totalAmount = (
       this.note2000Count * 2000 +
@@ -29,38 +30,49 @@ export class AppComponent {
       this.note200Count * 200 +
       this.note100Count * 100
     );
-  }
-
-  deposit() {
     this.transactions.push({
       type: 'deposit',
       amount: +this.totalAmount,
       timestamp: new Date()
     });
+  }
+
+  deposit() {
+   
     this.resetCounts();
   }
 
   withdraw() {
-   if(this.withDrawalAmount <= this.totalAmount){
+    if (this.withDrawalAmount <= this.totalAmount) {
+     
+      let remainingAmount = this.withDrawalAmount;
+
+      this.note2000Count = Math.floor(remainingAmount / 2000);
+      remainingAmount %= 2000;
+
+      this.note500Count = Math.floor(remainingAmount / 500);
+      remainingAmount %= 500;
+
+      this.note200Count = Math.floor(remainingAmount / 200);
+      remainingAmount %= 200;
+
+      this.note100Count = Math.floor(remainingAmount / 100);
+
+      this.totalAmount -= this.withDrawalAmount;
+      this.withDrawalAmount = 0; 
+    }
+    else {
+      alert('Insufficient funds for withdrawal.');
+    }
     this.transactions.push({
       type: 'withdraw',
       amount: -this.totalAmount,
       timestamp: new Date()
+      
     });
-    let remainingAmount = this.withDrawalAmount;
-    this.note2000Count = Math.floor(remainingAmount / 2000);
-    remainingAmount %= 2000;
-    this.note500Count = Math.floor(remainingAmount / 500);
-    remainingAmount %= 500;
-    this.note200Count = Math.floor(remainingAmount / 200);
-    remainingAmount %= 200;
-    this.note100Count = Math.floor(remainingAmount / 100);
 
-    this.withDrawalAmount = 0;
-   }else {
-    console.log('Insufficient funds for withdrawal.');
-  }
     this.resetCounts();
+
   }
 
   resetCounts() {

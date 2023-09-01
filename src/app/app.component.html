@@ -40,7 +40,6 @@
             <h2 class="text-success">Transaction History</h2>
             <ul>
               <li *ngFor="let transaction of transactions">
-                {{ transaction.type == 'deposit' ? 'DepositeAmount': '' }}:
                 {{transaction.type}} : {{transaction.amount}} at {{ transaction.timestamp | date:'medium' }}
               </li>
             </ul>
